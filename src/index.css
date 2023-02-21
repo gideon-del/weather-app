@@ -3,13 +3,23 @@
 @tailwind utilities;
 @tailwind components;
 @layer components {
-  .glassBg {
-    /* From https://css.glass */
-    background: rgba(255, 255, 255, 0.51);
-    border-radius: 16px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(12.2px);
-    -webkit-backdrop-filter: blur(12.2px);
-    border: 1px solid rgba(255, 255, 255, 0.65);
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 }

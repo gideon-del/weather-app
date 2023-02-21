@@ -1,7 +1,29 @@
+import { useEffect, useState } from "react";
 import Search from "./components/Search";
+import WeatherInfo from "./components/WeatherInfo";
+import { loadLocation } from "./store/apiCalls";
+import useStore from "./store/store";
 function App() {
   const dates = new Date().getFullYear();
-  console.log(dates);
+  const store = useStore();
+  const [coords, setCoords] = useState<{ lat: number; long: number }>();
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        store.toggleIsLoading(true);
+        await loadLocation(
+          { lat: pos.coords.latitude, long: pos.coords.longitude },
+          store.loadCurrentLocation
+        );
+        store.toggleIsLoading(false);
+      },
+      (err) => alert("Not able to get position")
+    );
+  }, []);
+  if (!store.isLoading) {
+    console.log(store.weather);
+  }
+
   return (
     <>
       <main className="min-h-screen bg-gradient-to-tr from-primary to-secondary font-josefinSans grid justify-items-center items-start py-7">
@@ -28,39 +50,7 @@ function App() {
             </div>
           </div>
         </div> */}
-        <div className="flex items-center">
-          <p className="md:text-6xl text-3xl">25°c</p>
-          <img src="http://openweathermap.org/img/wn/10d@2x.png" alt="sunny" />
-        </div>
-        <div className=" max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 w-full px-5 gap-6">
-          <div className="bg-primary font-bold flex items-center justify-between gap-2 p-4 rounded-md">
-            <i className="fa-solid fa-wind text-2xl "></i>
-            <p className="text-gray-600 ">
-              Wind Speed <br /> <span className="text-3xl">12km/h</span>
-            </p>
-          </div>
-
-          <div className="bg-primary font-bold flex items-center justify-between gap-2 p-4 rounded-md">
-            <i className="fa-solid fa-wind text-2xl "></i>
-            <p className="text-gray-600 ">
-              Wind Speed <br /> <span className="text-3xl">12km/h</span>
-            </p>
-          </div>
-
-          <div className="bg-primary font-bold flex items-center justify-between gap-2 p-4 rounded-md">
-            <i className="fa-solid fa-wind text-2xl "></i>
-            <p className="text-gray-600 ">
-              Wind Speed <br /> <span className="text-3xl">12km/h</span>
-            </p>
-          </div>
-
-          <div className="bg-primary font-bold flex items-center justify-between gap-2 p-4 rounded-md">
-            <i className="fa-solid fa-wind text-2xl "></i>
-            <p className="text-gray-600 ">
-              Wind Speed <br /> <span className="text-3xl">12km/h</span>
-            </p>
-          </div>
-        </div>
+        {store.isLoading ? <span className="loader"></span> : <WeatherInfo />}
       </main>
     </>
   );
