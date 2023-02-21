@@ -1,8 +1,6 @@
 // https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
 import { create } from "zustand";
-import WeatherInfo from "../components/WeatherInfo";
-import { loadLocation } from "./apiCalls";
 
 let url: string;
 
@@ -31,7 +29,7 @@ type Weather = {
   name: string;
   dt: number;
 };
-type Coords = {
+export type Coords = {
   lat: number;
   long: number;
 };

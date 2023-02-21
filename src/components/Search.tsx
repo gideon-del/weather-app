@@ -1,13 +1,7 @@
-import {
-  LegacyRef,
-  ReactEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useRef } from "react";
 import { loadSearch } from "../store/apiCalls";
 import useStore from "../store/store";
-
+import { ToastContainer, toast } from "react-toastify";
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const store = useStore();
